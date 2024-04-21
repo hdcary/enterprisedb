@@ -1,12 +1,10 @@
 ## 下一代 Postgres 高可用解决方案 
 
-##EDB Postgres Distributed分布式Always On架构##
+## EDB Postgres Distributed分布式Always On架构##
 
 在当今的数字化时代，数据的重要性不言而喻，而数据库的稳定性和可用性则是保障数据安全和业务连续性的关键。PostgreSQL及其衍生的国产数据库解决方案如同春日里的百花，竞相绽放，为企业提供多种高可用解决方案。然而，尽管市面上的高可用性（HA）解决方案众多，如基于pgPool-II、Patroni、pgBouncer以及HAproxy和Keeplive等实现PostgreSQL的高可用性，大多数仍旧采用一主多备（复制）的实现模式。这样的架构虽然在一定程度上保障了系统的稳定性，但在故障切换时仍可能出现服务中断。此外，在数据库版本升级和维护期间，服务的暂停也是一个不容忽视的问题，特别是在对连续性要求极高的在线事务处理（OLTP）业务场景下，传统的HA解决方案难以满足99.999%的高可用性要求。
 
-为满足这些挑战，向大家介绍一种超级高可用性解决方案------EDB Postgres
-Distributed（简称PGD）。PGD不仅打破了传统数据库的局限性，更进一步基于PostgreSQL实现了真正的multi-master架构、active/active部署、单/多位置（数据中心）以及极致高性能的extreme
-HA解决方案。
+为满足这些挑战，向大家介绍一种超级高可用性解决方案------EDB Postgres Distributed（简称PGD）。PGD不仅打破了传统数据库的局限性，更进一步基于PostgreSQL实现了真正的multi-master架构、active/active部署、单/多位置（数据中心）以及极致高性能的extreme HA解决方案。
 
 ### 引言 
 
@@ -14,8 +12,7 @@ HA解决方案。
 
 EDB Postgres Distributed（PGD），以前称为Postgres-BDR或BDR，有广泛的可能应用场景，例如主数据管理、分片和数据分发。
 
-EDB Postgres Distributed(PGD)也可用于本文描述的场景之外的架构。特定场景的用例已成功部署在生产环境中；但是，此类场景变体必须首先经过严格的体系结构审查，并且应启用EDB 的 Always On 体系结构 Trusted Postgres Architect （TPA）
-的标准部署工具来支持，然后才能部署在生产环境中。
+EDB Postgres Distributed(PGD)也可用于本文描述的场景之外的架构。特定场景的用例已成功部署在生产环境中；但是，此类场景变体必须首先经过严格的体系结构审查，并且应启用EDB 的 Always On 体系结构 Trusted Postgres Architect （TPA）的标准部署工具来支持，然后才能部署在生产环境中。
 
 ### 始终在线架构 Always On Architectures
 
@@ -44,30 +41,30 @@ Always On架构能在多种故障情况下提供保护。根据所需的容错�
 
  ![Always On 1 Location, 3 Nodes Diagram](media/image1.png)
 
--   冗余硬件，快速从本地故障中恢复
+ *   冗余硬件，快速从本地故障中恢复
   -   3 个 PGD 节点
-    -   可能是 3 个数据节点（推荐），或 2 个数据节点和 1个witness（仲裁）节点，后者不保存数据（图中未示出）
+   *   可能是 3 个数据节点（推荐），或 2 个数据节点和 1个witness（仲裁）节点，后者不保存数据（图中未示出）
   -   每个数据节点都有一个 PGD-Proxy，与应用程序保持亲和性
-    -   可以与数据节点共置同一主机
--   Barman用于备份和恢复
+   *   可以与数据节点共置同一主机
+ *   Barman用于备份和恢复
   -   可以被多个集群共享
--   Postgres Enterprise Manager（PEM）用于监控
+ *   Postgres Enterprise Manager（PEM）用于监控
   -   可以被多个集群共享
 
 -   **Always On Multi Location多数据中心架构**
 
 ![Always On 2 Locations, 3 Nodes Per Location, Active/Active Diagram](media/image2.png)
 
--   应用程序可以在每个位置（数据中心）为主动/主动，也可以是主动/被动或者主动DR（只有一个位置进行写入）。
--   未画出数据节点1和3之间的复制，但作为复制网格的一部分在进行。
--   冗余硬件，可从本地故障中快速恢复.
-  -   总共 6 个 PGD 节点，每个位置 3 个
-    -   可以是3个数据节点（推荐）
-    -   可以是 2个数据节点和1个不保存数据的见证节点（图中未示出）
-  -   每个数据节点有一个 PGD-Proxy，与应用程序保持亲和性
-    -   可以与数据节点位于同一位置（推荐）
-    -   可以位于单独的节点上
-  -   数据节点和位置的配置和基础结构对称性应确保在重新路由时有适当的资源可用于处理应用程序工作负载
+ -   应用程序可以在每个位置（数据中心）为主动/主动，也可以是主动/被动或者主动DR（只有一个位置进行写入）。
+ -   未画出数据节点1和3之间的复制，但作为复制网格的一部分在进行。
+ -   冗余硬件，可从本地故障中快速恢复.
+   -   总共 6 个 PGD 节点，每个位置 3 个
+     -   可以是3个数据节点（推荐）
+     -   可以是 2个数据节点和1个不保存数据的见证节点（图中未示出）
+ -   每个数据节点有一个 PGD-Proxy，与应用程序保持亲和性
+     -   可以与数据节点位于同一位置（推荐）
+     -   可以位于单独的节点上
+   -   数据节点和位置的配置和基础结构对称性应确保在重新路由时有适当的资源可用于处理应用程序工作负载
 -   Barman用于备份和恢复（图中未示出）.
   -   可由多个 PGD 集群共享
 -   Postgres Enterprise Manager (PEM)用于监控（图中未示述）.
