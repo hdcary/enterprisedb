@@ -42,14 +42,14 @@ Always On架构能在多种故障情况下提供保护。根据所需的容错�
  ![Always On 1 Location, 3 Nodes Diagram](media/image1.png)
 
   1. 冗余硬件，快速从本地故障中恢复
-    - 3 个 PGD 节点
-      * 可能是 3 个数据节点（推荐），或 2 个数据节点和 1个witness（仲裁）节点，后者不保存数据（图中未示出）
-    - 每个数据节点都有一个 PGD-Proxy，与应用程序保持亲和性
-      * 可以与数据节点共置同一主机
+     * 3 个 PGD 节点
+        * 可能是 3 个数据节点（推荐），或 2 个数据节点和 1个witness（仲裁）节点，后者不保存数据（图中未示出）
+     * 每个数据节点都有一个 PGD-Proxy，与应用程序保持亲和性
+        * 可以与数据节点共置同一主机
   2. Barman用于备份和恢复
-    - 可以被多个集群共享
+     * 可以被多个集群共享
   3. Postgres Enterprise Manager（PEM）用于监控
-    - 可以被多个集群共享
+     * 可以被多个集群共享
 
 -   **Always On Multi Location多数据中心架构**
 
