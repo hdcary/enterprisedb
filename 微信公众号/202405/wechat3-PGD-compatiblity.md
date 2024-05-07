@@ -1,68 +1,41 @@
-上篇我们对PGD的Always
-On架构做了基本简介，本篇主要介绍PGD不同版对Linux和PostgreSQL的各版本兼容性介绍，以及PGD在规划设计时的一些限制性介绍。
 
 # PGD各版本兼容性列表
+上篇我们对PGD的Always On架构做了基本简介，本篇主要介绍PGD不同版对Linux和PostgreSQL的各版本兼容性介绍，以及PGD在规划设计时的一些限制性介绍。
 
-  ------------------------------------------------------------------------
-                          5.x                        4.x\*
-  ----------------------- -------------------------- ---------------------
-  General availability    Feb 21, 2023               Dec 2, 2021
-
-  Standard support end    6.0 发布后 18 个月         Feb 20, 2025
-  date                                               
-
-  Currently Supported CPU Linux x86-64 (amd64)       Linux x86-64 (amd64)
-  Architecture and OS                                
-
-  **Red Hat Enterprise    9/8/7                      9/8/7
-  Linux**                                            
-
-  **Oracle Linux**        9/8/7                      9/8/7
-
-  **Rocky                 9/8                        9/8
-  Linux/AlmaLinux**                                  
-
-  **CentOS**              7                          7
-
-  **SUSE Linux Enterprise 15 SP5/12 SP5              15 SP5/12 SP5
-  Server**                                           
-
-  **Ubuntu**              22.04/20.04                22.04/20.04
-
-  Community PostgreSQL    12-16                      12, 13, 14
+|                       | 5.x                      |  4.x\*
+|-----------------------| -------------------------|----------------------
+|General availability    |Feb 21, 2023              | Dec 2, 2021
+|Standard support end  date  |6.0 发布后 18 个月         |Feb 20, 2025
+|Currently Supported CPU Architecture and OS |Linux x86-64 (amd64)       |Linux x86-64 (amd64)
+| **Red Hat Enterprise Linux**    |9/8/7                     | 9/8/7
+|**Oracle Linux**        |9/8/7                      |9/8/7
+|**Rocky Linux/AlmaLinux**  |9/8                     | 9/8
+|**CentOS**             | 7                          |7
+|**SUSE Linux Enterprise  Server**| 15 SP5/12 SP5             | 15 SP5/12 SP5
+|**Ubuntu**              |22.04/20.04                |22.04/20.04
+| Community PostgreSQL   | 12-16                     | 12, 13, 14
   ------------------------------------------------------------------------
 
-1)  EDB Postgres Distributed 4.x 使用 High Availability Routing for
-    Postgres (HARP) 进行集群管理，HARP 的支持信息与 PGD 4.x 相同
+1)  EDB Postgres Distributed 4.x 使用 High Availability Routing for Postgres (HARP) 进行集群管理，HARP 的支持信息与 PGD 4.x 相同
 
-2)  Postgres 16 support is only available in EDB Postgres Distributed
-    5.3 and later
-
-3)  PGD 5.x HARP Manager
-    已不复存在。它已被新的连接管理配置PGD-Proxy所取代。HARP
-    代理被功能类似的 PGD
-    代理所取代，该代理删除了所有已弃用的功能，并通过连接管理配置进行配置。
+2)  Postgres 16 support is only available in EDB Postgres Distributed 5.3 and later
+3)  PGD 5.x HARP Manager 已不复存在。它已被新的连接管理配置PGD-Proxy所取代。HARP代理被功能类似的PGD代理所取代，该代理删除了所有已弃用的功能，并通过连接管理配置进行配置。
 
 # PGD对PG兼容性矩阵
 
   ------------------------------------------------------------------------------
-  **EDB Postgres\ **Community\     **EDB Postgres\   **EDB Postgres\    **PGD\
-  Distributed**   PostgreSQL**     Extended Server** Advanced Server**  CLI**
-  --------------- ---------------- ----------------- ------------------ --------
-  5               12,13,14,15,16   12,13,14,15,16    12,13,14,15,16     5
-
-  4               12, 13, 14       12, 13, 14        12, 13, 14         1
-
-  3.7             11, 12, 13       11r2, 12, 13      11, 12, 13         n/a
-
-  3.6             10, 11           11r1              n/a                n/a
+ | **EDB Postgres Distributed**  |**Community  PostgreSQL**  | **EDB Postgres Extended Server**    |**EDB Postgres Advanced Server**    |**PGD CLI**          
+  |--------------- |---------------- |-----------------| ------------------ |--------
+  |5               |12,13,14,15,16   |12,13,14,15,16    |12,13,14,15,16     |5
+  |4               |12, 13, 14       |12, 13, 14        |12, 13, 14         |1
+  |3.7             |11, 12, 13       |11r2, 12, 13      |11, 12, 13         |n/a
+  |3.6             |10, 11           |11r1              |n/a                |n/a
   ------------------------------------------------------------------------------
 
 1)  BDR 4.1 及更高版本支持 PGD CLI 1。 BDR 3.7.15 及更高版本以及 4.0.1
     及更高版本支持 HARP 2 中的 BDR DCS。
 
-2)  EDB Postgres Distributed (includes pgLogical 3.7.x and BDR 3.7.x)
-    **标准支持终止：**2023 年 6 月 2 日
+2)  EDB Postgres Distributed (includes pgLogical 3.7.x and BDR 3.7.x) **标准支持终止**:2023 年 6 月 2 日
 
 # Limitations限制
 
